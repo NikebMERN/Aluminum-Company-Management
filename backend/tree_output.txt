@@ -1,0 +1,43 @@
+Folder PATH listing for volume Windows
+Volume serial number is F678-B615
+C:.
+�   .env
+�   .gitignore
+�   package-lock.json
+�   package.json
+�   server.js
+�   tree_output.txt
+�   
++---config
+�       db.js
+�       
++---controllers
+�       adminController.js
+�       authController.js
+�       customerController.js
+�       salesController.js
+�       subAdminController.js
+�       
++---middleware
+�       authMiddleware.js
+�       checkRole.js
+�       errorHandler.js
+�       
++---models
+�       Item.js
+�       Order.js
+�       Sale.js
+�       User.js
+�       
+
++---routes
+�       admin.js
+�       adminRoutes.js
+�       authRoutes.js
+�       customerRoutes.js
+�       salesRoutes.js
+�       subAdminRoutes.js
+�       
++---utils
+        sendEmail.js
+        
