@@ -1,5 +1,37 @@
 import db from "../config/db.js";
 import bcrypt from "bcryptjs";
+import multer from "multer";
+import path from "path";
+
+// Configure Multer storage
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "uploads/"); // Folder where images will be stored
+    },
+    filename: (req, file, cb) => {
+        cb(
+            null,
+            Date.now() + path.extname(file.originalname) // e.g. 1691687512.jpg
+        );
+    },
+});
+
+export const upload = multer({
+    storage,
+    limits: { fileSize: 5 * 1024 * 1024 }, // 5MB max size
+    fileFilter: (req, file, cb) => {
+        const filetypes = /jpeg|jpg|png|gif/;
+        const extname = filetypes.test(
+            path.extname(file.originalname).toLowerCase()
+        );
+        const mimetype = filetypes.test(file.mimetype);
+        if (mimetype && extname) {
+            return cb(null, true);
+        } else {
+            cb(new Error("Only images are allowed"));
+        }
+    },
+});
 
 // Create Sub-admin
 export const createSubAdmin = async (req, res) => {
@@ -42,13 +74,17 @@ export const getAllSubAdmins = async (req, res) => {
 export const assignAluminum = async (req, res) => {
     try {
         const { subAdminId, shape, quantity, price_per_item } = req.body;
+        const imageFile = req.file ? req.file.filename : null;
 
         await db.query(
-            "INSERT INTO aluminum_items (sub_admin_id, shape, given_quantity, sold_quantity, price_per_item) VALUES (?, ?, ?, 0, ?)",
-            [subAdminId, shape, quantity, price_per_item]
+            "INSERT INTO aluminum_items (sub_admin_id, shape, given_quantity, sold_quantity, price_per_item, image_url) VALUES (?, ?, ?, 0, ?, ?)",
+            [subAdminId, shape, quantity, price_per_item, imageFile]
         );
 
-        res.status(201).json({ message: "Aluminum assigned successfully" });
+        res.status(201).json({
+            message: "Aluminum assigned successfully",
+            image: imageFile,
+        });
     } catch (error) {
         res.status(500).json({ message: "Server error", error: error.message });
     }

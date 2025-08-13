@@ -148,8 +148,34 @@
 							}
 						],
 						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"subAdminId\": \"3\",\r\n    \"shape\": \"Square Shape\",\r\n    \"quantity\": \"100\",\r\n    \"price_per_item\": \"1000\"\r\n}"
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "subAdminId",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "shape",
+									"value": "Circle",
+									"type": "text"
+								},
+								{
+									"key": "quantity",
+									"value": "30",
+									"type": "text"
+								},
+								{
+									"key": "price_per_item",
+									"value": "1500",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/Nikodimos/Desktop/Web-Applications/Aluminum Managment system/backend/uploads/Screenshot 2025-07-04 230728.png"
+								}
+							]
 						},
 						"url": {
 							"raw": "{{base_url}}/api/admin/assign-aluminum",

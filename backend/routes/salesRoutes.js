@@ -11,6 +11,6 @@ const router = express.Router();
 router.use(protect);
 
 router.post("/record", recordSale);
-router.get("/revenue-report", getRevenueReport);
+router.get("/revenue-report/:subAdminId", getRevenueReport);
 
 export default router;

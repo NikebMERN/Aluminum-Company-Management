@@ -6,6 +6,7 @@ import {
   getAllSubAdmins,
   assignAluminum,
   getAllAluminum,
+  upload,
 } from "../controllers/adminController.js";
 
 const router = express.Router();
@@ -16,7 +17,7 @@ router.use(authorizeRoles("super_admin"));
 
 router.post("/create-subadmin", createSubAdmin);
 router.get("/subadmins", getAllSubAdmins);
-router.post("/assign-aluminum", assignAluminum);
+router.post("/assign-aluminum", upload.single("image"), assignAluminum);
 router.get("/aluminum", getAllAluminum);
 
 export default router;

@@ -6,6 +6,7 @@ import authRoutes from "./routes/authRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import subAdminRoutes from "./routes/subAdminRoutes.js";
 import salesRoutes from "./routes/salesRoutes.js";
+import deductRoute from "./routes/deductRoute.js";
 import customerRoutes from "./routes/customerRoutes.js";
 import notificationRoutes from "./routes/notificationRoutes.js";
 
@@ -25,6 +26,7 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/subadmin", subAdminRoutes);
 app.use("/api/sales", salesRoutes);
 app.use("/api/customer", customerRoutes);
+app.use("/api/deduct", deductRoute);
 app.use("/api/notifications", notificationRoutes);
 
 app.get("/", (req, res) => {
