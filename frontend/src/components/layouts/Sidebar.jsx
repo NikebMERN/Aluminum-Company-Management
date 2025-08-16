@@ -28,7 +28,7 @@ export default function Sidebar() {
         sub_admin: [
             { name: "Dashboard", icon: <DashboardIcon />, path: "/sub_admin" },
             { name: "Update Sales", icon: <UpgradeIcon />, path: "/sub_admin/update-sales" },
-            { name: "Orders", icon: <GradingIcon />, path: "/sub_admin/orders" },
+            { name: "Sales", icon: <GradingIcon />, path: "/sub_admin/orders" },
             { name: "Notify Sold-Out", icon: <CircleNotificationsIcon />, path: "/sub_admin/notify-soldout" },
         ],
         customer: [

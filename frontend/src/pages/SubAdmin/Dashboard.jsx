@@ -25,39 +25,59 @@ export default function Dashboard() {
 
     return (
         <div>
-        <Topbar title="My Assigned Aluminum Stock" />
+            <Topbar title="My Assigned Aluminum Stock" />
 
             <div className="flex min-h-screen bg-gray-100">
-            <Sidebar />
-            {/* <Topbar /> */}
-            <table className="w-full border">
-                <thead>
-                    <tr className="bg-gray-200">
-                        <th className="p-2 border">Shape</th>
-                        <th className="p-2 border">Given Qty</th>
-                        <th className="p-2 border">Sold Qty</th>
-                        <th className="p-2 border">Remaining</th>
-                        <th className="p-2 border">Price/Item</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {items.map((item) => (
-                        <tr key={item.id}>
-                            <td className="p-2 border">{item.shape}</td>
-                            <td className="p-2 border">{item.given_quantity}</td>
-                            <td className="p-2 border">{item.sold_quantity}</td>
-                            <td className="p-2 border">
-                                { ((item.given_quantity - item.sold_quantity) === 0) ? 
-                                    (<Link to="/sub_admin/notify-soldout" className="text-red-500">Out of Stock (Report)</Link>)
-                                :
-                                    (item.given_quantity - item.sold_quantity)
-                                }
-                            </td>
-                            <td className="p-2 border">${item.price_per_item}</td>
+                <Sidebar />
+                {/* <Topbar /> */}
+                <table className="w-full border">
+                    <thead>
+                        <tr className="bg-gray-200">
+                            <th className="p-2 border">Shape</th>
+                            <th className="p-2 border">Given Qty</th>
+                            <th className="p-2 border">Sold Qty</th>
+                            <th className="p-2 border">Remaining</th>
+                            <th className="p-2 border">Price/Item</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {items.map((item) => (
+                            <tr key={item.id}>
+                                <td className="p-2 border">{item.shape}</td>
+                                <td className="p-2 border">{item.given_quantity}</td>
+                                <td className="p-2 border">{item.sold_quantity}</td>
+                                <td className="p-2 border">
+                                    {(() => {
+                                        const remaining = item.given_quantity - item.sold_quantity;
+
+                                        if (remaining === 0) {
+                                            return (
+                                                <Link
+                                                    to="/sub_admin/notify-soldout"
+                                                    className="text-red-500"
+                                                >
+                                                    Out of Stock (Report)
+                                                </Link>
+                                            );
+                                        } else if (remaining <= 20) {
+                                            return (
+                                                <Link
+                                                    to="/sub_admin/notify-soldout"
+                                                    className="text-yellow-500"
+                                                >
+                                                    {remaining}-Stock is running out (Report)
+                                                </Link>
+                                            );
+                                        } else {
+                                            return remaining;
+                                        }
+                                    })()}
+                                </td>
+                                <td className="p-2 border">${item.price_per_item}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
             {/* <button>
                 <Link

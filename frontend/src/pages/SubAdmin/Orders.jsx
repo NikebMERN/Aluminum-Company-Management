@@ -31,11 +31,11 @@ export default function Orders() {
             <table className="w-full border">
                 <thead>
                     <tr className="bg-gray-200">
-                        <th className="p-2 border">Order ID</th>
+                        <th className="p-2 border">Sales ID</th>
                         <th className="p-2 border">Shape</th>
                         <th className="p-2 border">Given Quantity</th>
                         <th className="p-2 border">Sold Quantity</th>
-                        <th className="p-2 border">Total Revenue</th>
+                        <th className="p-2 border">Total Price</th>
                     </tr>
                 </thead>
                 <tbody>
