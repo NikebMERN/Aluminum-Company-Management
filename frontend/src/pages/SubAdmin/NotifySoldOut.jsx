@@ -13,7 +13,7 @@ export default function NotifySoldOut() {
     const [items, setItems] = useState([]);
     const [selectedId, setSelectedId] = useState("");
     const { notifySuccess, notifyError } = useNotification();
-    const toEmail = "nikodimoelais@gmail.com"; // Replace with actual super admin email
+    const toEmail = "matimahtem@gmail.com"; // Replace with actual super admin email
     const subject = "Stock Sold Out Notification";
     const navigate = useNavigate();
 
@@ -22,7 +22,7 @@ export default function NotifySoldOut() {
             try {
                 const data = await getAssignedItems();
                 setItems(data.data);
-                console.log(data.data);
+                // console.log(data.data);
             } catch {
                 notifyError("Failed to load items");
             }

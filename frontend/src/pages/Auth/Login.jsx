@@ -4,15 +4,18 @@ import { Link, useNavigate } from "react-router-dom";
 import { useNotification } from "../../hooks/useNotification";
 import RoleSelector from "../../components/common/RoleSelector";
 
+// 👇 add icons
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+
 export default function Login() {
   const { login } = useAuth();
   const { notifySuccess, notifyError } = useNotification();
   const [role, setRole] = useState("");
-  // console.log(role);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // 👈 toggle state
   const navigate = useNavigate();
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,14 +43,25 @@ export default function Login() {
           className="w-full border px-3 py-2 rounded"
           required
         />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full border px-3 py-2 rounded"
-          required
-        />
+
+        {/* Password input with visibility toggle */}
+        <div className="relative">
+          <input
+            type={showPassword ? "text" : "password"}
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full border px-3 py-2 rounded pr-10"
+            required
+          />
+          <span
+            className="absolute right-3 top-2 cursor-pointer text-gray-600 hover:text-gray-800"
+            onClick={() => setShowPassword((prev) => !prev)}
+          >
+            {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+          </span>
+        </div>
+
         <button
           type="submit"
           className="bg-blue-600 text-white w-full py-2 rounded hover:bg-blue-700"

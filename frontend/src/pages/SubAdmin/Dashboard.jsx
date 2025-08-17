@@ -15,7 +15,7 @@ export default function Dashboard() {
         (async () => {
             try {
                 const data = await getAssignedItems();
-                console.log(data.data);
+                // console.log(data.data);
                 setItems(data.data);
             } catch {
                 notifyError("Failed to load assigned items");

@@ -23,7 +23,7 @@ export default function Sidebar() {
                 icon: <CreateIcon />,
                 path: "/super_admin/create-subadmin",
             },
-            { name: "Assign Aluminum", icon: <AssignmentLateIcon />, path: "/super_admin/assign" },
+            { name: "Stock Aluminum", icon: <AssignmentLateIcon />, path: "/super_admin/assign" },
         ],
         sub_admin: [
             { name: "Dashboard", icon: <DashboardIcon />, path: "/sub_admin" },

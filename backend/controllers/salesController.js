@@ -29,27 +29,28 @@ export const getRevenueReport = async (req, res) => {
 
         const query = `
             SELECT 
+                ai.id AS item_id,
                 ai.sub_admin_id,
-                COALESCE(SUM(s.quantity_sold * ai.price_per_item), 0) AS total_revenue,
-                COALESCE(SUM(s.quantity_sold), 0) AS total_items_sold,
-                COALESCE(SUM(ai.given_quantity), 0) AS total_items_assigned
+                ai.shape AS item_name,
+                ai.price_per_item,
+                ai.given_quantity,
+                COALESCE(SUM(s.quantity_sold), 0) AS total_sold
             FROM aluminum_items ai
             LEFT JOIN sales s ON ai.id = s.item_id
-            WHERE ai.sub_admin_id = ?
-            GROUP BY ai.sub_admin_id
+            WHERE ai.sub_admin_id = ? 
+              AND ai.given_quantity > 0
+            GROUP BY ai.id, ai.sub_admin_id, ai.shape, ai.price_per_item, ai.given_quantity
         `;
 
         const [rows] = await db.query(query, [subAdminId]);
 
         if (!rows.length) {
-            return res.status(404).json({ message: "No sales or items found for this sub admin" });
+            return res.status(404).json({ message: "No assigned items found for this sub admin" });
         }
 
-        res.json(rows[0]);
+        res.json(rows);
     } catch (error) {
         res.status(500).json({ message: "Server error", error: error.message });
     }
 };
-
-
 

@@ -13,7 +13,7 @@ export default function Orders() {
             try {
                 const data = await getMyOrders();
                 setOrders(data.data);
-                console.log(data.data);
+                // console.log(data.data);
             } catch {
                 notifyError("Failed to fetch orders");
             }

@@ -46,6 +46,7 @@ export const placeOrder = async (req, res) => {
 export const getCustomerOrders = async (req, res) => {
     try {
         const customerId = req.user.id;
+        // console.log(customerId);
         const [orders] = await db.query(
             `SELECT o.id, o.order_date, oi.item_id, oi.quantity, ai.shape, ai.price_per_item
        FROM orders o

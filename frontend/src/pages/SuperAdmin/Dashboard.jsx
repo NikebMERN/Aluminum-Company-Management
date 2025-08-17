@@ -18,7 +18,7 @@ export default function SuperAdminDashboard() {
             try {
                 const data = await getAllSubAdmins();
                 setSubAdmins(data.data);
-                console.log(data.data);
+                // console.log(data.data);
             } catch (err) {
                 notifyError("Failed to fetch sub-admins");
             }

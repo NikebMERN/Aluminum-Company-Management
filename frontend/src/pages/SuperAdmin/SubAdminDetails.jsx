@@ -7,55 +7,123 @@ import Topbar from "../../components/layouts/Topbar";
 
 export default function SubAdminDetails() {
     const { id } = useParams();
-    const [details, setDetails] = useState(null);
+    const [items, setItems] = useState([]);
     const { notifyError } = useNotification();
 
     useEffect(() => {
         (async () => {
             try {
                 const res = await getRevenueReport(id);
-                setDetails(res.data); // ✅ now stores single object
+                setItems(res.data); // ✅ now stores array of items
+                console.log(res.data);
             } catch {
                 notifyError("Failed to fetch sub-admin details");
             }
         })();
     }, [id]);
 
-    if (!details) {
+    if (!items.length) {
         return (
             <div className="flex justify-center items-center h-screen text-lg">
                 Loading sub-admin details...
             </div>
         );
     }
+    // ✅ compute totals in frontend safely
+    let totalRevenue = 0;
+    let totalItemsSold = 0;
+    let totalItemsAssigned = 0;
+
+    items.forEach((item) => {
+        const sold = Number(item.total_sold) || 0;
+        const assigned = Number(item.given_quantity) || 0;
+        const price = Number(item.price_per_item) || 0;
+
+        totalItemsSold += sold;
+        totalItemsAssigned += assigned;
+        totalRevenue += sold * price;
+    });
+
+    const totalRemaining = totalItemsAssigned - totalItemsSold;
 
     return (
         <div>
-                    <Topbar title="Sub-Admin Revenue Report" />
+            <Topbar title="Sub-Admin Revenue Report" />
             <div className="flex min-h-screen bg-gray-100">
                 <Sidebar />
                 <div className="flex-1 p-6 bg-gray-50">
-                    <div className="mt-6 bg-white shadow-md rounded p-6 max-w-lg mx-auto">
-                        <h3 className="text-lg font-semibold mb-4">
-                            Sub Admin ID: {details.sub_admin_id}
+                    <div className="mt-6 bg-white shadow-md rounded p-6 max-w-4xl mx-auto">
+                        <h3 className="text-lg font-semibold mb-6">
+                            Sub Admin ID: {items[0].sub_admin_id}
                         </h3>
 
-                        <div className="space-y-3">
+                        {/* ✅ Table for item details */}
+                        <table className="w-full border-collapse border border-gray-300">
+                            <thead className="bg-gray-200">
+                                <tr>
+                                    <th className="border border-gray-300 px-4 py-2 text-left">
+                                        Item Name
+                                    </th>
+                                    <th className="border border-gray-300 px-4 py-2 text-left">
+                                        Price per Item
+                                    </th>
+                                    <th className="border border-gray-300 px-4 py-2 text-left">
+                                        Assigned Quantity
+                                    </th>
+                                    <th className="border border-gray-300 px-4 py-2 text-left">
+                                        Sold
+                                    </th>
+                                    <th className="border border-gray-300 px-4 py-2 text-left">
+                                        Remaining
+                                    </th>
+                                    <th className="border border-gray-300 px-4 py-2 text-left">
+                                        Revenue
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {items.map((item) => (
+                                    <tr key={item.item_id}>
+                                        <td className="border border-gray-300 px-4 py-2">
+                                            {item.item_name}
+                                        </td>
+                                        <td className="border border-gray-300 px-4 py-2">
+                                            ${item.price_per_item}
+                                        </td>
+                                        <td className="border border-gray-300 px-4 py-2">
+                                            {item.given_quantity}
+                                        </td>
+                                        <td className="border border-gray-300 px-4 py-2">
+                                            {item.total_sold}
+                                        </td>
+                                        <td className="border border-gray-300 px-4 py-2">
+                                            {item.given_quantity - item.total_sold}
+                                        </td>
+                                        <td className="border border-gray-300 px-4 py-2">
+                                            ${item.total_sold * item.price_per_item}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+
+                        {/* ✅ Totals summary */}
+                        <div className="mt-6 space-y-2">
                             <p className="text-gray-700">
                                 <span className="font-semibold">Total Revenue:</span> $
-                                {details.total_revenue}
+                                {totalRevenue}
                             </p>
                             <p className="text-gray-700">
                                 <span className="font-semibold">Total Items Sold:</span>{" "}
-                                {details.total_items_sold}
+                                {totalItemsSold}
                             </p>
                             <p className="text-gray-700">
                                 <span className="font-semibold">Total Items Assigned:</span>{" "}
-                                {details.total_items_assigned}
+                                {totalItemsAssigned}
                             </p>
                             <p className="text-gray-700">
                                 <span className="font-semibold">Remaining Stock:</span>{" "}
-                                {details.total_items_assigned - details.total_items_sold}
+                                {totalRemaining}
                             </p>
                         </div>
 

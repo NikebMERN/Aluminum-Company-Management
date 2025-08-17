@@ -18,7 +18,9 @@ export default function UpdateSales() {
     const now = new Date();
     const currentDate = `${now.getFullYear()}-${String(
         now.getMonth() + 1
-    ).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+    ).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")} ${String(
+        now.getHours())}:${String(now.getMinutes()).padStart(2, "0")}:${String(
+    now.getSeconds())}`; // Format: YYYY-MM-DD HH:mm:ss
     // console.log(currentDate);
 
     useEffect(() => {
@@ -47,7 +49,7 @@ export default function UpdateSales() {
 
             // ✅ Save receipt data
             setReceipt(res.data);
-            console.log(res.data);
+            // console.log(res.data);
 
             // Reset form
             setForm({ itemId: "", sold_quantity: "" });
@@ -191,7 +193,7 @@ export default function UpdateSales() {
                                         doc.text(`VAT (15%): ${vat.toFixed(2)} ETB`, 14, 122);
                                         doc.setFontSize(13);
                                         doc.text(
-                                            `Total Revenue: ${totalRevenue.toFixed(2)} ETB`,
+                                            `Total Price: ${totalRevenue.toFixed(2)} ETB`,
                                             14,
                                             132
                                         );

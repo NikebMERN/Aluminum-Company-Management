@@ -7,8 +7,8 @@ dotenv.config();
 async function createSuperAdmin() {
     try {
         const name = "Super Admin";
-        const email = "superadmin@example.com";
-        const password = "superadmin1234"; // Change to your desired password
+        const email = "matimahtem@gmail.com";
+        const password = "1234"; // Change to your desired password
         const role = "super_admin";
 
         // Check if super admin already exists

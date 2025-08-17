@@ -14,7 +14,7 @@ export default function Orders() {
             try {
                 const data = await getAssignedItems();
                 setOrders(data.data);
-                console.log(data.data)
+                // console.log(data.data)
             } catch {
                 notifyError("Failed to fetch orders");
             }

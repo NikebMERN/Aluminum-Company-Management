@@ -10,7 +10,8 @@ import { notifySoldOut } from "../../services/subAdminService";
 export default function Checkout() {
     const { cartItems, totalPrice, clearCart } = useCart();
     const [customerInfo, setCustomerInfo] = useState({
-        name: "",
+        receiverName: "",
+        companyName: "",
         email: "",
         phone: "",
         address: "",
@@ -18,14 +19,14 @@ export default function Checkout() {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    const superAdminEmail = "nikodimoelais@gmail.com"; // Replace with actual super admin email
+    const superAdminEmail = "nikodimoelias@gmail.com"; // Replace with actual super admin email
 
     const handleInputChange = (e) => {
         setCustomerInfo({ ...customerInfo, [e.target.name]: e.target.value });
     };
 
     const handleCheckout = async () => {
-        if (!customerInfo.name || !customerInfo.phone || !customerInfo.address) {
+        if (!customerInfo.receiverName || !customerInfo.phone || !customerInfo.address) {
             toast.error("Please fill in all required fields");
             return;
         }
@@ -41,7 +42,7 @@ export default function Checkout() {
             const payload = {
                 customer: customerInfo,
                 items: cartItems.map((item) => ({
-                    id: item.id,
+                    itemId: item.id,
                     quantity: item.quantity,
                 })),
                 total: totalPrice,
@@ -69,7 +70,8 @@ export default function Checkout() {
                         const subject = `Stock Sold Out: ${item.shape}`;
                         const message = `
 Product: ${item.shape}
-Last Ordered By: ${customerInfo.name}
+Last Ordered By: ${customerInfo.receiverName}
+Company: ${customerInfo.companyName || "Not provided"}
 Delivery Address: ${customerInfo.address}
 Quantity Ordered: ${item.quantity}
 Sub-admin ID: ${item.subAdminId}
@@ -87,7 +89,7 @@ Sub-admin ID: ${item.subAdminId}
                 if (customerInfo.email) {
                     const subject = "Order Confirmation - Aluminum Company";
                     const message = `
-Dear ${customerInfo.name},
+Dear ${customerInfo.receiverName},
 
 Thank you for your order! Here are your order details:
 
@@ -101,6 +103,7 @@ ${cartItems
                             .join("\n")}
 
 Total Price: $${totalPrice.toFixed(2)}
+Company: ${customerInfo.companyName || "Not provided"}
 Delivery Address: ${customerInfo.address}
 
 We will contact you shortly for delivery details.
@@ -119,7 +122,8 @@ We will contact you shortly for delivery details.
                 const adminMessage = `
 A new order has been placed.
 
-Customer: ${customerInfo.name}
+Receiver: ${customerInfo.receiverName}
+Company: ${customerInfo.companyName || "Not provided"}
 Phone: ${customerInfo.phone}
 Email: ${customerInfo.email || "Not provided"}
 Address: ${customerInfo.address}
@@ -145,7 +149,13 @@ Total Price: $${totalPrice.toFixed(2)}
                 }
 
                 clearCart();
-                setCustomerInfo({ name: "", email: "", phone: "", address: "" });
+                setCustomerInfo({
+                    receiverName: "",
+                    companyName: "",
+                    email: "",
+                    phone: "",
+                    address: "",
+                });
                 navigate("/customer/orders");
             } else {
                 toast.error(res.data?.message || "Failed to place order");
@@ -169,12 +179,20 @@ Total Price: $${totalPrice.toFixed(2)}
                     <div className="space-y-3 mb-6 max-w-lg">
                         <input
                             type="text"
-                            name="name"
-                            placeholder="Full Name"
-                            value={customerInfo.name}
+                            name="receiverName"
+                            placeholder="Receiver Name"
+                            value={customerInfo.receiverName}
                             onChange={handleInputChange}
                             className="w-full p-2 border rounded"
                             required
+                        />
+                        <input
+                            type="text"
+                            name="companyName"
+                            placeholder="Company Name (optional)"
+                            value={customerInfo.companyName}
+                            onChange={handleInputChange}
+                            className="w-full p-2 border rounded"
                         />
                         <input
                             type="email"
