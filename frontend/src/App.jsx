@@ -1,4 +1,10 @@
-import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  Navigate,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { useAuth } from "./hooks/useAuth";
 import RoleSelector from "./components/common/RoleSelector";
@@ -9,12 +15,17 @@ import Register from "./pages/Auth/Register";
 import SuperAdminDashboard from "./pages/SuperAdmin/Dashboard";
 import SubAdminDetails from "./pages/SuperAdmin/SubAdminDetails";
 import AssignAluminum from "./pages/SuperAdmin/AssignAluminum";
+import CreateSubAdmin from "./pages/SuperAdmin/CreateSubAdmin";
+import CreateStockRequest from "./pages/SuperAdmin/CreateStockRequest";
+import CompareQuotations from "./pages/SuperAdmin/CompareQuotations";
 
 // Sub Admin Pages
 import SubAdminDashboard from "./pages/SubAdmin/Dashboard";
 import Orders from "./pages/SubAdmin/Orders";
 import UpdateSales from "./pages/SubAdmin/UpdateSales";
 import NotifySoldOut from "./pages/SubAdmin/NotifySoldOut";
+import AssignedRequests from "./pages/SubAdmin/AssignedRequests";
+import SubmitQuotation from "./pages/SubAdmin/SubmitQuotation";
 
 // Customer Pages
 import Home from "./pages/Customer/Home";
@@ -22,44 +33,41 @@ import Cart from "./pages/Customer/Cart";
 import Checkout from "./pages/Customer/Checkout";
 import CustomerOrders from "./pages/Customer/Orders";
 
-// Not Found
+// Layouts & Not Found
 import NotFound from "./pages/NotFound";
-import { useEffect } from "react";
-import CreateSubAdmin from "./pages/SuperAdmin/CreateSubAdmin";
 import Header from "./components/layouts/Header";
 import Footer from "./components/layouts/Footer";
 
+import { useEffect } from "react";
+import UseStockItem from "./pages/SubAdmin/UseStockItem";
+// import StockRequestDetails from "./pages/SuperAdmin/StockRequestDetails";
+
 export default function App() {
   const { user } = useAuth();
-  // console.log(user);
   const navigate = useNavigate();
+  const location = useLocation(); // ✅ Correct way
 
-useEffect(() => {
+  useEffect(() => {
     const allowedPaths = ["/login", "/register"];
     const currentPath = location.pathname;
 
     if (!user && !allowedPaths.includes(currentPath)) {
-        navigate("/login");
+      navigate("/login");
     }
-}, [user, navigate, location.pathname]);
+  }, [user, navigate, location.pathname]);
 
   const ProtectedRoute = ({ children, role }) => {
     if (!user) return <Navigate to="/login" replace />;
-    // if (role && user.role !== role) return <Navigate to="/" replace />;
+    if (role && user.role !== role) return <Navigate to="/" replace />;
     return children;
   };
-
-  const handleRole = (selectedRole) => {
-    // This function can be used to handle role selection globally if needed
-    // console.log(`Selected role: ${selectedRole}`);
-  }
 
   return (
     <>
       <Toaster position="top-right" />
       <Routes>
         {/* Role Selector */}
-        <Route path="/" element={<RoleSelector onRoleSelect={handleRole} />} />
+        <Route path="/" element={<RoleSelector />} />
 
         {/* Auth */}
         <Route path="/login" element={<Login />} />
@@ -70,7 +78,7 @@ useEffect(() => {
           path="/super_admin"
           element={
             <ProtectedRoute role="super_admin">
-            <Header />
+              <Header />
               <SuperAdminDashboard />
               <Footer />
             </ProtectedRoute>
@@ -96,7 +104,7 @@ useEffect(() => {
             </ProtectedRoute>
           }
         />
-                <Route
+        <Route
           path="/super_admin/create-subadmin"
           element={
             <ProtectedRoute role="super_admin">
@@ -106,6 +114,36 @@ useEffect(() => {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/super_admin/create-stock-request"
+          element={
+            <ProtectedRoute role="super_admin">
+              <Header />
+              <CreateStockRequest />
+              <Footer />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/super_admin/compare-quotations/:requestId"
+          element={
+            <ProtectedRoute role="super_admin">
+              <Header />
+              <CompareQuotations />
+              <Footer />
+            </ProtectedRoute>
+          }
+        />
+        {/* <Route
+          path="/super_admin/stock-requests:id"
+          element={
+            <ProtectedRoute role="super_admin">
+              <Header />
+              <StockRequestDetails />
+              <Footer />
+            </ProtectedRoute>
+          }
+        /> */}
 
         {/* Sub Admin Routes */}
         <Route
@@ -144,6 +182,36 @@ useEffect(() => {
             <ProtectedRoute role="sub_admin">
               <Header />
               <NotifySoldOut />
+              <Footer />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/sub_admin/assigned-requests"
+          element={
+            <ProtectedRoute role="sub_admin">
+              <Header />
+              <AssignedRequests />
+              <Footer />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/sub_admin/submit-quotation/:id/:subid"
+          element={
+            <ProtectedRoute role="sub_admin">
+              <Header />
+              <SubmitQuotation />
+              <Footer />
+            </ProtectedRoute>
+          }
+        />
+          <Route
+          path="/sub_admin/use-stock"
+          element={
+            <ProtectedRoute role="sub_admin">
+              <Header />
+              <UseStockItem />
               <Footer />
             </ProtectedRoute>
           }
@@ -190,6 +258,7 @@ useEffect(() => {
             </ProtectedRoute>
           }
         />
+        
 
         {/* 404 */}
         <Route path="*" element={<NotFound />} />

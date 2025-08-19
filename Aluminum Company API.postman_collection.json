@@ -169,11 +169,6 @@
 									"key": "price_per_item",
 									"value": "1500",
 									"type": "text"
-								},
-								{
-									"key": "image",
-									"type": "file",
-									"src": "/C:/Users/Nikodimos/Desktop/Web-Applications/Aluminum Managment system/backend/uploads/Screenshot 2025-07-04 230728.png"
 								}
 							]
 						},
@@ -226,6 +221,155 @@
 				},
 				{
 					"name": "Sold Items Record by Sub Admin",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/sales/revenue-report/21",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"sales",
+								"revenue-report",
+								"21"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Stock Request",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"subAdminId\": 21,\r\n  \"items\": [\r\n    { \"shape\": \"I-Beam\", \"description\": \"20ft support beam\", \"quantity\": \"50\" },\r\n    { \"shape\": \"Pipe\", \"description\": \"4 inch steel pipe\", \"quantity\": 200 }\r\n  ]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/stock/create",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"stock",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Disapprove quotation",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/stock/quotations/7",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"stock",
+								"quotations",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Select Winnin Quotation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"requestItemId\": 1,\r\n    \"chosenPrice\": 10000\r\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/stock/quotations/3/approve",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"stock",
+								"quotations",
+								"3",
+								"approve"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Stock",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -241,14 +385,83 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/api/sales/revenue-report",
+							"raw": "{{base_url}}/api/stock/requests",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"api",
-								"sales",
-								"revenue-report"
+								"stock",
+								"requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Stock Request Assigned to Sub Admin",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/stock/subadmin/21",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"stock",
+								"subadmin",
+								"21"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get quotation by Request ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"requestItemId\": 1,\r\n    \"quotations\": [\r\n        {\r\n            // \"request_item_id\": 10,\r\n            \"companyName\": \"ABC Welding Co.\",\r\n            \"price\": 12000\r\n        },\r\n        {\r\n            // \"request_item_id\": 10,\r\n            \"companyName\": \"DEF Welding Co.\",\r\n            \"price\": 10000\r\n        }\r\n    ]\r\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/stock/quotations/3",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"stock",
+								"quotations",
+								"3"
 							]
 						}
 					},
@@ -299,7 +512,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"itemId\":2,\"quantitySold\":5}"
+							"raw": "{\r\n  \"itemId\": 38,\r\n  \"quantitySold\": 5\r\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/api/subadmin/update-sold",
@@ -409,6 +622,95 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Sub Admin Quotaions",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"requestItemId\": 1,\r\n    \"quotations\": [\r\n        {\r\n            // \"request_item_id\": 10,\r\n            \"companyName\": \"ABC Welding Co.\",\r\n            \"price\": 12000\r\n        },\r\n        {\r\n            // \"request_item_id\": 10,\r\n            \"companyName\": \"DEF Welding Co.\",\r\n            \"price\": 10000\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/stock/quotations",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"stock",
+								"quotations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deduct Used Items",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"projectStockId\": 2,\r\n  \"usedQuantity\": 10\r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/stock/use-stock",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"stock",
+								"use-stock"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Stock Detail by Sub Admin ID",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Get Stock Request Detail",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
 				}
 			]
 		},
@@ -455,7 +757,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"items\": [\r\n        {\r\n            \"itemId\": 1,\r\n            \"quantity\": 2\r\n        },\r\n        {\r\n            \"itemId\": 2,\r\n            \"quantity\": 3\r\n        }\r\n    ]\r\n}"
+							"raw": "{\r\n    \"items\": [\r\n        {\r\n            \"itemId\": 44,\r\n            \"quantity\": 1\r\n        },\r\n        {\r\n            \"itemId\": 44,\r\n            \"quantity\": 1\r\n        }\r\n    ]\r\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/api/customer/place-order",
@@ -501,6 +803,38 @@
 								"api",
 								"customer",
 								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deduct Item Buyed",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"itemId\":36,\"quantitySold\":2}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/deduct/update-sold",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"deduct",
+								"update-sold"
 							]
 						}
 					},
