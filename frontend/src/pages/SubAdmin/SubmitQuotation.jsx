@@ -52,7 +52,7 @@ export default function SubmitQuotation() {
             toast.success("Quotation submitted successfully!");
             setPrice("");
             setCompany("");
-            navigate("/sub_admin");
+            navigate("/sub_admin/assigned-requests");
         } catch {
             toast.error("Failed to submit quotation");
         }

@@ -33,7 +33,7 @@ export default function CompareQuotations() {
             if (res.status === 200) {
                 toast.success("Quotation approved successfully!");
                 fetchQuotations();
-                navigate(`/super_admin`);
+                navigate(`/super_admin/create-stock-request`);
             }
         } catch (error) {
             toast.error(

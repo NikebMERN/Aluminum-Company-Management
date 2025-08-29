@@ -84,7 +84,7 @@ export default function SubAdminDetails() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {items.map((item) => {
+                                {items?.map((item) => {
                                     const remaining = item.given_quantity - item.total_sold;
                                     return (
                                         <tr key={item.item_id}>
@@ -141,7 +141,7 @@ export default function SubAdminDetails() {
                                 <h4 className="text-md font-semibold mb-4">
                                     Stock Requests Assigned
                                 </h4>
-                                {stockDetails.map((req) => (
+                                {stockDetails?.map((req) => (
                                     <div
                                         key={req.id}
                                         className={`mb-6 border rounded-lg shadow-sm ${statusColor[req.status]
