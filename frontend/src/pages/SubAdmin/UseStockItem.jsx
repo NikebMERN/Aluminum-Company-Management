@@ -25,7 +25,7 @@ export default function UseStockItem() {
             try {
                 const res = await getStockDetailsBySubAdmin(user.id);
                 setRequests(res.data || []);
-                // console.log(res.data);
+                console.log(res.data);
             } catch {
                 notifyError("Failed to load assigned stock");
             }
@@ -34,7 +34,19 @@ export default function UseStockItem() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!selectedItemId || !quantity) return;
+        if ((!selectedItemId || !quantity)) return;
+        for(let m of requests) {
+            for(let itm of m.items) {
+                if(itm.id == selectedItemId) {  
+                    if(quantity > (itm.quantity - itm.used_quantity)) {
+                        toast.error("Quantity exceeds available stock");
+                        return;
+                        console.log("exceeds");
+                        // break;
+                    }
+                }
+            }
+        }
 
         try {
             const res = await useStockItem({
@@ -105,8 +117,8 @@ export default function UseStockItem() {
                                 {deducted.message}
                             </h3>
                             <p>
-                                <span className="font-medium">Deducted:</span>{" "}
-                                {deducted.deducted}
+                                <span className="font-medium">Total:</span>{" "}
+                                {deducted.total}
                             </p>
                             <p>
                                 <span className="font-medium">Used Quantity:</span>{" "}
@@ -114,7 +126,7 @@ export default function UseStockItem() {
                             </p>
                             <p>
                                 <span className="font-medium">Remaining:</span>{" "}
-                                {deducted.remaining}
+                                {deducted.total - deducted.used_quantity}
                             </p>
                         </div>
                     )}
