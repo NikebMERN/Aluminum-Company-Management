@@ -25,7 +25,6 @@ export default function UseStockItem() {
             try {
                 const res = await getStockDetailsBySubAdmin(user.id);
                 setRequests(res.data || []);
-                // console.log(res.data);
             } catch {
                 notifyError("Failed to load assigned stock");
             }
@@ -50,12 +49,12 @@ export default function UseStockItem() {
         }
 
         try {
-            console.log(selectedItemId, quantity);
+            // console.log(selectedItemId, quantity);
             const res = await useStockItem({
                 projectStockId: selectedItemId,
                 usedQuantity: Number(quantity),
             });
-            console.log(res.data);
+            // console.log(res.data);
             setDeducted(res.data);
 
             toast.success("Stock item deducted successfully!");

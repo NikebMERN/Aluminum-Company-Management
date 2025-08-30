@@ -212,7 +212,7 @@ export default function SubAdminDetails() {
                                                         <tbody>
                                                             {req.items?.map((item) => {
                                                                 const remaining =
-                                                                    item.total_quantity - item.used_quantity;
+                                                                    Math.abs(item.total_quantity - item.used_quantity);
                                                                 return (
                                                                     <tr key={item.id}>
                                                                         <td className="border px-3 py-1">

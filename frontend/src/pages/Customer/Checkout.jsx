@@ -19,7 +19,7 @@ export default function Checkout() {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    const superAdminEmail = "nikodimoelias@gmail.com"; // Replace with actual super admin email
+    const superAdminEmail = import.meta.env.VITE_API_ADMIN_EMAIL; // Replace with actual super admin email
 
     const handleInputChange = (e) => {
         setCustomerInfo({ ...customerInfo, [e.target.name]: e.target.value });

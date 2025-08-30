@@ -13,7 +13,7 @@ export default function NotifySoldOut() {
     const [items, setItems] = useState([]);
     const [selectedId, setSelectedId] = useState("");
     const { notifySuccess, notifyError } = useNotification();
-    const toEmail = "matimahtem@gmail.com"; // Replace with actual super admin email
+    const toEmail = import.meta.env.VITE_API_ADMIN_EMAIL; // Replace with actual super admin email
     const subject = "Stock Sold Out Notification";
     const navigate = useNavigate();
 

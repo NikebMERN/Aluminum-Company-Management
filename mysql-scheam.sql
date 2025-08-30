@@ -49,7 +49,7 @@ CREATE TABLE `sales` (
   sold_by int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- 2️⃣ Stock Requests table
+-- Stock Requests table
 CREATE TABLE stock_requests (
     id INT AUTO_INCREMENT PRIMARY KEY,
     super_admin_id INT NOT NULL,
@@ -60,7 +60,7 @@ CREATE TABLE stock_requests (
     FOREIGN KEY (sub_admin_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
--- 3️⃣ Stock Request Items table
+-- Stock Request Items table
 CREATE TABLE stock_request_items (
     id INT AUTO_INCREMENT PRIMARY KEY,
     request_id INT NOT NULL,
@@ -71,7 +71,7 @@ CREATE TABLE stock_request_items (
     FOREIGN KEY (request_id) REFERENCES stock_requests(id) ON DELETE CASCADE
 );
 
--- 4️⃣ Quotations table
+-- Quotations table
 CREATE TABLE quotations (
     id INT AUTO_INCREMENT PRIMARY KEY,
     request_item_id INT NOT NULL,
@@ -81,7 +81,7 @@ CREATE TABLE quotations (
     FOREIGN KEY (request_item_id) REFERENCES stock_request_items(id) ON DELETE CASCADE
 );
 
--- 5️⃣ Project Stock table (stock available for engineers)
+-- Project Stock table (stock available for engineers)
 CREATE TABLE project_stock (
     id INT AUTO_INCREMENT PRIMARY KEY,
     request_item_id INT NOT NULL,
