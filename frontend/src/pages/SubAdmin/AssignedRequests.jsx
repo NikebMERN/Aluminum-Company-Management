@@ -27,7 +27,7 @@ export default function AssignedRequests() {
         <div className="flex">
             <Sidebar />
             <div className="p-6 flex-1">
-                <h1 className="text-2xl font-bold mb-6">Assigned Stock Requests</h1>
+                <h1 className="text-2xl font-bold mb-6">Assigned Requests</h1>
 
                 {requests.length === 0 ? (
                     <p className="text-gray-600">No assigned requests yet.</p>
