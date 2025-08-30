@@ -25,7 +25,7 @@ export default function UseStockItem() {
             try {
                 const res = await getStockDetailsBySubAdmin(user.id);
                 setRequests(res.data || []);
-                console.log(res.data);
+                // console.log(res.data);
             } catch {
                 notifyError("Failed to load assigned stock");
             }
@@ -39,9 +39,10 @@ export default function UseStockItem() {
             for(let itm of m.items) {
                 if(itm.id == selectedItemId) {  
                     if(quantity > (itm.quantity - itm.used_quantity)) {
+                        // console.log(itm.quantity - itm.used_quantity)
                         toast.error("Quantity exceeds available stock");
                         return;
-                        console.log("exceeds");
+                        // console.log("exceeds");
                         // break;
                     }
                 }
@@ -49,11 +50,12 @@ export default function UseStockItem() {
         }
 
         try {
+            console.log(selectedItemId, quantity);
             const res = await useStockItem({
                 projectStockId: selectedItemId,
                 usedQuantity: Number(quantity),
             });
-            // console.log(res.data);
+            console.log(res.data);
             setDeducted(res.data);
 
             toast.success("Stock item deducted successfully!");
@@ -117,8 +119,8 @@ export default function UseStockItem() {
                                 {deducted.message}
                             </h3>
                             <p>
-                                <span className="font-medium">Total:</span>{" "}
-                                {deducted.total}
+                                <span className="font-medium">Deducted:</span>{" "}
+                                {deducted.deducted}
                             </p>
                             <p>
                                 <span className="font-medium">Used Quantity:</span>{" "}
@@ -126,7 +128,7 @@ export default function UseStockItem() {
                             </p>
                             <p>
                                 <span className="font-medium">Remaining:</span>{" "}
-                                {deducted.total - deducted.used_quantity}
+                                {deducted.total ? deducted.total : ""}
                             </p>
                         </div>
                     )}

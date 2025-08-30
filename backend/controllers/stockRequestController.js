@@ -122,7 +122,7 @@ export const useStock = async (req, res) => {
 
         // Fetch stock row
         const [rows] = await db.query(
-            "SELECT total_quantity, used_quantity FROM project_stock WHERE id = ?",
+            "SELECT total_quantity, used_quantity FROM project_stock WHERE request_item_id = ?",
             [projectStockId]
         );
 
@@ -139,18 +139,19 @@ export const useStock = async (req, res) => {
         }
 
         // Deduct directly from total_quantity
-        // const newTotal = stock.total_quantity - usedQuantity;
+        const newTotal = stock.total_quantity - usedQuantity;
         const newUsed = stock.used_quantity + usedQuantity;
 
         await db.query(
-            "UPDATE project_stock SET used_quantity = ? WHERE id = ?",
-            [newUsed, projectStockId]
+            "UPDATE project_stock SET total_quantity = ?, used_quantity = ? WHERE id = ?",
+            [newTotal, newUsed, projectStockId]
         );
 
         res.json({
             message: "Stock deducted successfully",
+            deducted: usedQuantity,
             used_quantity: newUsed,
-            total: stock.total_quantity,
+            total: newTotal,
         });
     } catch (err) {
         res.status(500).json({ message: "Server error", error: err.message });

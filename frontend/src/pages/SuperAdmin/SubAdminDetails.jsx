@@ -32,7 +32,7 @@ export default function SubAdminDetails() {
     if (!items.length && !stockDetails.length) {
         return (
             <div className="flex justify-center items-center h-screen text-lg">
-                Loading sub-admin details...
+                Loading sub-admin details(There is no sub-admin details)...
             </div>
         );
     }
