@@ -250,7 +250,10 @@ export const disapproveStockQuotation = async (req, res) => {
 
         // Get the quotation and its related request item
         const [rows] = await db.query(
-            "SELECT q.*, i.id AS request_item_id, i.chosen_price, i.request_id FROM quotations q JOIN stock_request_items i ON q.request_item_id = i.id WHERE q.id = ?",
+            `SELECT q.*, i.id AS request_item_id, i.chosen_price, i.request_id 
+             FROM quotations q 
+             JOIN stock_request_items i ON q.request_item_id = i.id 
+             WHERE q.id = ?`,
             [quotationId]
         );
 
@@ -259,36 +262,37 @@ export const disapproveStockQuotation = async (req, res) => {
 
         const q = rows[0];
 
-        // If this quotation was the chosen one (price already selected)
-        const isChosen = q.chosen_price === q.price;
+        // ✅ Update this quotation status back to "pending"
+        await db.query(
+            "UPDATE quotations SET status = 'pending' WHERE id = ?",
+            [quotationId]
+        );
 
-        if (isChosen) {
-            // Reset chosen price on request item
-            await db.query(
-                "UPDATE stock_request_items SET chosen_price = NULL WHERE id = ?",
-                [q.request_item_id]
-            );
+        // ❌ Instead of deleting the stock_request_item (which cascades), 
+        // just mark it as disapproved or inactive
+        await db.query(
+            "UPDATE stock_request_items SET status = 'disapproved' WHERE id = ?",
+            [q.request_item_id]
+        );
 
-            // Check remaining quotations for this request item
-            const [remainingQuotes] = await db.query(
-                "SELECT * FROM quotations WHERE request_item_id = ? AND id != ?",
-                [q.request_item_id, quotationId]
-            );
+        // After marking, check if there are still ACTIVE items left in this request
+        const [remainingItems] = await db.query(
+            "SELECT * FROM stock_request_items WHERE request_id = ? AND status != 'disapproved'",
+            [q.request_id]
+        );
 
-            // Update request status
-            const newStatus = remainingQuotes.length
-                ? "quotations_collected"
-                : "pending";
-            await db.query("UPDATE stock_requests SET status = ? WHERE id = ?", [
-                newStatus,
-                q.request_id,
-            ]);
-        }
+        // Update stock_request status depending on remaining items
+        const newStatus = remainingItems.length ? "quotations_collected" : "pending";
 
-        // Delete the quotation
-        await db.query("DELETE FROM quotations WHERE id = ?", [quotationId]);
+        await db.query("UPDATE stock_requests SET status = ? WHERE id = ?", [
+            newStatus,
+            q.request_id,
+        ]);
 
-        res.json({ message: "Quotation disapproved successfully" });
+        res.json({
+            message:
+                "Quotation disapproved successfully. Status reset and stock_request_item marked as disapproved.",
+        });
     } catch (err) {
         res.status(500).json({ message: "Server error", error: err.message });
     }

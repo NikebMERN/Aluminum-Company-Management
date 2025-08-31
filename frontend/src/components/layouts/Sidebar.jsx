@@ -22,7 +22,7 @@ export default function Sidebar() {
         super_admin: [
             { name: "Dashboard", icon: <DashboardIcon />, path: "/super_admin" },
             { name: "Create Sub Admins", icon: <CreateIcon />, path: "/super_admin/create-subadmin" },
-            { name: "Stock Aluminum", icon: <AssignmentLateIcon />, path: "/super_admin/assign" },
+            { name: "Assign Aluminum", icon: <AssignmentLateIcon />, path: "/super_admin/assign" },
             { name: "Request Stock", icon: <RequestPageIcon />, path: "/super_admin/create-stock-request" },
             // { name: "Compare Quotations", icon: <CompareArrowsIcon />, path: "/super_admin/compare-quotations/1" }, // dynamic later
         ],

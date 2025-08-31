@@ -32,7 +32,7 @@ router.get(
     authorizeRoles("super_admin"),
     getQuotationsByRequest
 );
-router.delete(
+router.patch(
     "/quotations/:quotationId",
     authorizeRoles("super_admin"),
     disapproveStockQuotation

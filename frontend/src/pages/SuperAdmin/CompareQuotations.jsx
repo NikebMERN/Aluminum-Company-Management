@@ -49,8 +49,10 @@ export default function CompareQuotations() {
             if (res.status === 200) {
                 toast.success("Quotation disapproved and deleted!");
                 fetchQuotations();
+                navigate(`/super_admin/create-stock-request`);
             }
         } catch (error) {
+            navigate(`/super_admin/create-stock-request`);
             toast.error(
                 error.response?.data?.message || "Failed to disapprove quotation"
             );

@@ -38,6 +38,6 @@ export const approveStockQuotation = (quotationId) =>
     API.post(`/stock/quotations/${quotationId}/approve`);
 
 export const disapproveStockQuotation = (id) => 
-    API.delete(`/stock/quotations/${id}`);
+    API.patch(`/stock/quotations/${id}`);
 
 
